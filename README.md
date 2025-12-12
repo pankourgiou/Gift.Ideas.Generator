@@ -1,0 +1,1 @@
+Here, I made a Gift Ideas generator. You can choose if the gift is for a male or female and what type of budget you want to spend on the Gift or what type of gift you want it to be, and the program generates you the best gift for this person. I hope you enjoy it!
