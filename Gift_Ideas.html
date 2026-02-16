@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Futuristic Gift ideas Generator 🎁✨</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+  body {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    font-family: 'Orbitron', sans-serif;
+    color: #00fff7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7;
+  }
+
+  .container {
+    background: rgba(0,0,0,0.6);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px #00fff7;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+  }
+
+  select, input[type=number] {
+    background: rgba(0,0,0,0.8);
+    border: 2px solid #00fff7;
+    border-radius: 10px;
+    color: #00fff7;
+    font-size: 1rem;
+    padding: 10px;
+    margin: 10px 0;
+    width: 80%;
+    text-align: center;
+  }
+
+  button {
+    background: #00fff7;
+    color: #0f0c29;
+    font-weight: bold;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 15px;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background: #0ff;
+    box-shadow: 0 0 20px #00fff7, 0 0 40px #00fff7;
+  }
+
+  #result {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    text-align: left;
+    background: rgba(0,0,0,0.4);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00fff7 inset;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎁 Futuristic Gift Generator</h1>
+<div class="container">
+  <label for="gender">Gender:</label><br>
+  <select id="gender">
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+  </select>
+
+  <label for="category">Category:</label><br>
+  <select id="category">
+    <option value="technology">Technology</option>
+    <option value="hobbies">Hobbies</option>
+    <option value="fashion">Fashion</option>
+    <option value="gaming">Gaming (Male only)</option>
+    <option value="beauty">Beauty (Female only)</option>
+  </select>
+
+  <label for="budget">Max Budget ($):</label><br>
+  <input type="number" id="budget" min="0" value="50">
+
+  <button onclick="suggestGift()">Generate Gift 🎉</button>
+
+  <div id="result">Your suggestion will appear here...</div>
+</div>
+
+<script>
+const FLAVOR_TEXT = [
+  "✨ This one always gets a great reaction.",
+  "🎁 A surprisingly thoughtful pick!",
+  "🔥 Top-tier gift energy right here.",
+  "🌟 People LOVE receiving this!",
+  "💡 Smart, stylish, and useful.",
+  "😎 An underrated but amazing gift.",
+  "🪄 Simple, but magical."
+];
+
+const GIFTS = {
+  "male": {
+    "technology": [
+      ["Anker 313 Power Bank (10,000mAh)", 24],
+      ["Logitech MX Master 3S Mouse", 95],
+      ["Sony WH-1000XM5 Headphones", 348],
+      ["Apple AirTag (4 pack)", 89],
+      ["Raspberry Pi 5 Starter Kit", 129],
+      ["Keychron K6 Mechanical Keyboard", 79],
+      ["Mini 1080p Projector", 69],
+      ["Samsung T7 Portable SSD 1TB", 89],
+      ["Smart LED Light Strip (16ft)", 22],
+      ["Bluetooth Tracking Wallet", 39],
+      ["MagSafe Charger Stand", 29],
+      ["LED Matrix Display Clock", 45],
+      ["Portable Bluetooth Speaker (JBL Clip 4)", 49],
+      ["USB Microphone (Fifine K669B)", 29],
+      ["Wireless Charging Desk Pad", 32],
+      ["Mechanical Numpad Add-on", 25],
+      ["VR Headset (Meta Quest 3)", 299],
+      ["Smartwatch (Fitbit Versa 4)", 149],
+      ["Noise Cancelling Earbuds", 129],
+      ["Home Smart Hub (Google Nest Hub)", 99]
+    ],
+    "hobbies": [
+      ["Premium Leather Wallet", 45],
+      ["Adjustable Dumbbell Set", 159],
+      ["Whiskey Stones Gift Box", 19],
+      ["Beard Grooming & Care Kit", 25],
+      ["Professional Poker Set", 39],
+      ["Sports Team Hoodie", 60],
+      ["BBQ Stainless Grill Tool Kit", 49],
+      ["LED Basketball Hoop Light", 22],
+      ["Electric Screwdriver Kit", 38],
+      ["Fishing Tackle Starter Set", 27],
+      ["Car Detailing Kit", 32],
+      ["Metal Model Puzzle Kit", 18],
+      ["Mini Desk Punching Bag", 14],
+      ["Beer Craft Sampler Pack", 28],
+      ["Premium Sketchbook + Pencils", 21],
+      ["Drone Ball (Hover Orb)", 26],
+      ["Scented Car Diffuser Device", 17],
+      ["Camping Hammock", 35],
+      ["Foldable Bike Lock", 22],
+      ["Virtual Reality Fitness Mat", 79]
+    ],
+    "fashion": [
+      ["Minimalist Leather Bracelet", 16],
+      ["White Casual Sneakers", 55],
+      ["Stainless Steel Chain Necklace", 18],
+      ["Black Bomber Jacket", 45],
+      ["Vintage Graphic Hoodie", 38],
+      ["Aviator Sunglasses", 24],
+      ["Denim Jacket (Classic Fit)", 50],
+      ["Thermal Long Sleeve Set", 29],
+      ["Leather Belt Premium Edition", 28],
+      ["Bracelet Watch (Minimalist)", 35],
+      ["Oversized Flannel Shirt", 32],
+      ["Streetwear Beanie 3-Pack", 18],
+      ["Canvas Messenger Bag", 40],
+      ["Wool Scarf (Winter)", 22],
+      ["Sports Cap 3-Pack", 18],
+      ["Leather Gloves", 35],
+      ["Slim Fit Chinos", 49],
+      ["Retro Sweatshirt", 36],
+      ["Graphic Tee Bundle (3 pcs)", 45]
+    ],
+    "gaming": [
+      ["Steam Gift Card ($50)", 50],
+      ["Xbox Wireless Controller", 64],
+      ["PS5 DualSense Controller", 69],
+      ["Extended RGB Mousepad", 19],
+      ["HyperX Cloud II Gaming Headset", 79],
+      ["LED Gaming Wall Sign", 25],
+      ["Minecraft Creeper Lamp", 22],
+      ["Fortnite / Apex Legends Skin Credit", 20],
+      ["Retro Handheld Emulator", 40],
+      ["Ergonomic Wrist Rest Set", 17],
+      ["Thumb Grip Pack for Controllers", 8],
+      ["Gaming Desk Cup Holder Attachment", 14],
+      ["Racing Wheel Controller", 129],
+      ["Gaming Chair (Budget)", 199],
+      ["VR Fitness Game Pack", 69],
+      ["RGB Monitor Backlight Strip", 39],
+      ["High-speed Gaming Mouse", 49],
+      ["Mechanical Gaming Keyboard", 79],
+      ["RGB Headset Stand", 25]
+    ]
+  },
+
+  "female": {
+    "technology": [
+      ["Pink Wireless Keyboard & Mouse Set", 29],
+      ["Apple AirPods 3", 169],
+      ["LED Vanity Mirror w/ Touch", 24],
+      ["Kodak Mini Photo Printer", 79],
+      ["Huion H640P Drawing Tablet", 39],
+      ["Phone Tripod with Ring Light", 29],
+      ["Heart-Shaped Desk Lamp (USB)", 22],
+      ["Aesthetic Bluetooth Speaker Cube", 28],
+      ["Smart LED Alarm Clock", 26],
+      ["Wireless Charging Makeup Mirror", 31],
+      ["Floral Laptop Sleeve 13-inch", 17],
+      ["Colorful Cable Protectors (10 Pack)", 9],
+      ["Portable Mini Desk Fan", 15],
+      ["LED Display Pixel Art Cube", 55],
+      ["Smartwatch (Fitbit Luxe)", 129],
+      ["Portable Bluetooth Photo Printer", 99],
+      ["Ring Light Phone Holder", 35],
+      ["Wireless Earbuds (Cute Color)", 49],
+      ["Mini Smart Projector", 79],
+      ["UV Phone Sanitizer Box", 29]
+    ],
+    "hobbies": [
+      ["Luxury Spa Gift Basket", 42],
+      ["Aesthetic Journal + Gold Pen Set", 18],
+      ["DIY Candle-Making Kit", 35],
+      ["Makeup Brush Professional Set", 27],
+      ["Aesthetic Room LED Decor Kit", 25],
+      ["Giant Plush (Soft & Cute)", 29],
+      ["Crystal Healing Bracelet", 16],
+      ["Scrapbooking Set (Cute Stickers)", 14],
+      ["Adult Coloring Book + Markers", 21],
+      ["Baking Essentials Starter Kit", 32],
+      ["Custom Name Necklaces Kit", 20],
+      ["Polaroid Photo Album Book", 16],
+      ["Fluffy Lounge Socks (3-Pack)", 12],
+      ["Beginner Crochet Starter Set", 18],
+      ["Matcha Latte Gift Box", 27],
+      ["Painting Watercolor Kit", 29],
+      ["Acrylic Nail Art Kit", 21],
+      ["Embroidery Kit for Beginners", 25],
+      ["DIY Terrarium Kit", 34],
+      ["Mini Sewing Machine", 69]
+    ],
+    "fashion": [
+      ["Gold Butterfly Necklace", 12],
+      ["Oversized Zip-Up Hoodie", 32],
+      ["Korean-Style Canvas Tote Bag", 18],
+      ["Heart-Shaped Sunglasses", 14],
+      ["Crossbody Minimal Purse", 28],
+      ["Layered Necklace Set (Gold)", 15],
+      ["Cute Flare Sleeve Sweater", 29],
+      ["Floral Summer Dress", 26],
+      ["Knitted Beanie (Soft Style)", 13],
+      ["Jewelry Organizer Travel Box", 19],
+      ["Aesthetic Hair Clip Set", 10],
+      ["Denim Jacket (Loose Fit)", 36],
+      ["Silk Scarf", 25],
+      ["Leather Handbag (Mini)", 49],
+      ["Casual Slip-On Sneakers", 39],
+      ["Sunhat & Sunglasses Combo", 28],
+      ["Chic Cardigan Sweater", 32],
+      ["Statement Earrings Set", 22],
+      ["Summer Sandal Pair", 29],
+      ["Faux Leather Skirt", 35]
+    ],
+    "beauty": [
+      ["Perfume Rollerball Set", 22],
+      ["The Ordinary Skincare Starter Kit", 29],
+      ["Lip Gloss Set (Cute Colors)", 14],
+      ["Ariana Grande 'Cloud' Perfume", 48],
+      ["Heated Hair Styling Brush", 39],
+      ["Bath Bomb 20-piece Mega Set", 20],
+      ["Nail Art Decoration Kit", 17],
+      ["Luxury Hand Cream Collection", 24],
+      ["Face Mask Variety Box", 19],
+      ["Makeup Travel Bag (Compact)", 16],
+      ["Silk Sleeping Eye Mask", 13],
+      ["Body Scrub Coffee Edition", 14],
+      ["Magnetic Eyelash Set", 25],
+      ["Hair Curling Wand", 34],
+      ["Spa Headband + Towel Set", 18],
+      ["LED Makeup Mirror", 29],
+      ["Lipstick Collection Mini", 22],
+      ["Makeup Brush Cleaning Mat", 15],
+      ["Facial Roller & Gua Sha Set", 19],
+      ["Compact Hair Dryer", 49]
+    ]
+  }
+};
+
+
+function suggestGift() {
+  const gender = document.getElementById('gender').value;
+  const category = document.getElementById('category').value;
+  const budget = parseFloat(document.getElementById('budget').value);
+
+  if (!GIFTS[gender][category]) {
+    document.getElementById('result').innerHTML = "❌ This category is not available for selected gender.";
+    return;
+  }
+
+  // Filter by budget
+  const options = GIFTS[gender][category].filter(g => g[1] <= budget);
+  if (options.length === 0) {
+    document.getElementById('result').innerHTML = "😕 No gifts match that budget.";
+    return;
+  }
+
+  const [gift, price] = options[Math.floor(Math.random() * options.length)];
+  const flavor = FLAVOR_TEXT[Math.floor(Math.random() * FLAVOR_TEXT.length)];
+
+  document.getElementById('result').innerHTML = `
+    🎁 <strong>Gift Idea:</strong> ${gift}<br>
+    💰 <strong>Price:</strong> $${price}<br>
+    ${flavor}
+  `;
+}
+</script>
+
+</body>
+</html>
